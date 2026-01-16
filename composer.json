@@ -1,0 +1,19 @@
+{
+    "name": "masqueradis/router",
+    "description": "Simple php routing mechanism",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Masqueradis\\Router\\": "src/Masqueradis/Routers"
+        }
+    },
+    "authors": [
+        {
+            "name": "Masqueradis",
+            "email": "masqueradisu@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
