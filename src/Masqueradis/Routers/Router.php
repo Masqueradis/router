@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Masqueradis\Routers;
 
 use Composer\Autoload\ClassLoader;
+use Masqueradis\Routers\Request;
 
 class Router
 {
@@ -15,10 +16,12 @@ class Router
 
     public function dispatch(string $targetNamespace, string $uri): void
     {
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
         $dirPath = $this->getDirFromNamespace($targetNamespace);
 
         if (!is_dir($dirPath) || !$dirPath) {
             echo 'No directory for Controller: ' . $targetNamespace . PHP_EOL;
+            return;
         }
 
         $files = glob($dirPath . '/*.php');
@@ -29,7 +32,7 @@ class Router
             $fullClassName = rtrim($targetNamespace, '\\') . '\\' . $className;
 
             if (class_exists($fullClassName)) {
-                if($this->scanClass($fullClassName, $uri)){
+                if($this->scanClass($fullClassName, $uri, $requestMethod)){
                     return;
                 }
             }
@@ -57,7 +60,7 @@ class Router
         return null;
     }
 
-    private function scanClass(string $className, string $uri): bool
+    private function scanClass(string $className, string $uri, string $requestMethod): bool
     {
         $reflection = new \ReflectionClass($className);
         $prefix = '';
@@ -73,6 +76,10 @@ class Router
             foreach ($attributes as $attribute) {
                 $route = $attribute->newInstance();
 
+                if (strtoupper($route->method) !== strtoupper($requestMethod)) {
+                    continue;
+                }
+
                 $fullPath = rtrim($prefix, '/') . '/' . ltrim($route->path, '/');
                 if ($fullPath !== '/') {
                     $fullPath = '/' . ltrim($fullPath, '/');
@@ -80,12 +87,35 @@ class Router
 
                 if ($fullPath === $uri) {
                     $controller = new $className();
-                    $action = $method->getName();
-                    $controller->$action();
+                    $args = $this->resolveParameters($method);
+                    $method->invokeArgs($controller, $args);
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private function resolveParameters(\ReflectionMethod $method): array
+    {
+        $args = [];
+        $request = Request::fromGlobals();
+
+        foreach ($method->getParameters() as $parameter) {
+            $type = $parameter->getType();
+
+            if(!$type || $type->isBuiltin()) {
+                $args[] = null;
+                continue;
+            }
+
+            $typeName = $type->getName();
+
+            if($typeName === Request::class) {
+                $args[] = $request;
+                continue;
+            }
+        }
+        return $args;
     }
 }
