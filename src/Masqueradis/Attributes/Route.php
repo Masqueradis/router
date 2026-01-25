@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Masqueradis\Routers;
+namespace Masqueradis\Attributes;
 
 use Attribute;
 

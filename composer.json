@@ -5,7 +5,13 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Masqueradis\\Routers\\": "src/Masqueradis/Routers/"
+            "Masqueradis\\Routers\\": "src/Masqueradis/Routers/",
+            "Masqueradis\\Attributes\\": "src/Masqueradis/Attributes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Masqueradis\\Tests\\": "src/Masqueradis/tests/"
         }
     },
     "authors": [
@@ -15,5 +21,8 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^2.1"
+    }
 }

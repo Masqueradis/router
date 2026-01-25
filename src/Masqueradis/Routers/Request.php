@@ -16,18 +16,32 @@ class Request
 
     public static function fromGlobals(): self
     {
-        $body = $_POST;
-        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        $body = self::getPostData();
+        $contentType = self::getServerData('CONTENT_TYPE') ?? '';
 
         if (str_contains($contentType, 'application/json')) {
             $input = file_get_contents('php://input');
             $decoded = json_decode($input, true);
+
             if(is_array($decoded)) {
                 $body = array_merge($body, $decoded);
             }
         }
+
         return new self($body);
     }
+
+    public static function getPostData(): array
+    {
+        return $_POST;
+    }
+
+    public static function getServerData(string $key): ?string
+    {
+        return $_SERVER[$key] ?? null;
+    }
+
+
 
     public function mapTo(string $className): object
     {

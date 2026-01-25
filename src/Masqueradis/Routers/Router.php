@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Masqueradis\Routers;
 
 use Composer\Autoload\ClassLoader;
-use Masqueradis\Routers\Request;
+use Masqueradis\Attributes\Route;
 
 class Router
 {
