@@ -14,12 +14,17 @@ class Router
         $this->composerLoader = $loader;
     }
 
+    public static function getServerData(string $key): ?string
+    {
+        return $_SERVER[$key] ?? null;
+    }
+
     public function dispatch(string $targetNamespace, string $uri): void
     {
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        $requestMethod = self::getServerData('REQUEST_METHOD');
         $dirPath = $this->getDirFromNamespace($targetNamespace);
 
-        if (!is_dir($dirPath) || !$dirPath) {
+        if (!$dirPath || !is_dir($dirPath)) {
             echo 'No directory for Controller: ' . $targetNamespace . PHP_EOL;
             return;
         }

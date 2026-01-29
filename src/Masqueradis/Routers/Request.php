@@ -41,27 +41,6 @@ class Request
         return $_SERVER[$key] ?? null;
     }
 
-
-
-    public function mapTo(string $className): object
-    {
-        $reflection = new ReflectionClass($className);
-        $dto = $reflection->newInstance();
-        $allData = array_merge($this->queryParams, $this->body);
-
-        foreach ($reflection->getProperties() as $property) {
-            $name = $property->getName();
-
-            if(isset($allData[$name])) {
-                $property->setValue($dto, $allData[$name]);
-            }
-        }
-        if (method_exists($dto, 'validate')) {
-            $dto->validate($allData);
-        }
-        return $dto;
-    }
-
     public function input(string $key, mixed $default = null): mixed
     {
         if(isset($this->body[$key])) {
