@@ -17,4 +17,5 @@ class FakeController
         $title = $request->input('title', default: 'no title');
         printf('Admin with id: %s and title: %s.', $id, $title);
     }
+
 }

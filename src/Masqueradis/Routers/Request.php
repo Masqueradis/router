@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Masqueradis\Routers;
 
-use ReflectionClass;
-
 class Request
 {
     public function __construct(
@@ -18,15 +16,6 @@ class Request
     {
         $body = self::getPostData();
         $contentType = self::getServerData('CONTENT_TYPE') ?? '';
-
-        if (str_contains($contentType, 'application/json')) {
-            $input = file_get_contents('php://input');
-            $decoded = json_decode($input, true);
-
-            if(is_array($decoded)) {
-                $body = array_merge($body, $decoded);
-            }
-        }
 
         return new self($body);
     }

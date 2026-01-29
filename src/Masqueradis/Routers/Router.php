@@ -37,7 +37,7 @@ class Router
             $fullClassName = rtrim($targetNamespace, '\\') . '\\' . $className;
 
             if (class_exists($fullClassName)) {
-                if($this->scanClass($fullClassName, $uri, $requestMethod)){
+                if($this->scanClass($fullClassName, $uri)){
                     return;
                 }
             }
@@ -65,7 +65,7 @@ class Router
         return null;
     }
 
-    private function scanClass(string $className, string $uri, string $requestMethod): bool
+    private function scanClass(string $className, string $uri): bool
     {
         $reflection = new \ReflectionClass($className);
         $prefix = '';
@@ -80,10 +80,6 @@ class Router
 
             foreach ($attributes as $attribute) {
                 $route = $attribute->newInstance();
-
-                if (strtoupper($route->method) !== strtoupper($requestMethod)) {
-                    continue;
-                }
 
                 $fullPath = rtrim($prefix, '/') . '/' . ltrim($route->path, '/');
                 if ($fullPath !== '/') {

@@ -21,7 +21,7 @@ class RouterTest extends TestCase
 
     }
 
-    public function testRouter(): void
+    public function testRouterPostMethod(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST = [
@@ -37,5 +37,39 @@ class RouterTest extends TestCase
 
         $this->expectOutputString('Admin with id: 1 and title: title.');
         $this->router->dispatch($fakeNamespace, '/admin/dashboard');
+    }
+
+    public function testRouterNoController(): void
+    {
+        $fakeNamespace = 'Masqueradis\\Tests\\FakeControllers\\';
+
+        $this->expectOutputString('No directory for Controller: Masqueradis\\Tests\\FakeControllers\\' . PHP_EOL);
+        $this->router->dispatch($fakeNamespace, '/admin');
+    }
+
+    public function testScanClassNegativeCase(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $fakeNamespace = 'Masqueradis\\Tests\\FakeControllers\\';
+
+        $this->loaderMuck->method('getPrefixesPsr4')->willReturn([
+            'Masqueradis\\Tests\\' => [__DIR__]
+        ]);
+
+        $this->router->dispatch($fakeNamespace, '/fake/path');
+        $this->expectOutputString('');
+    }
+
+    public function testResolveBuiltInParameters(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $fakeNamespace = 'Masqueradis\\Tests\\FakeControllers\\';
+
+        $this->loaderMuck->method('getPrefixesPsr4')->willReturn([
+            'Masqueradis\\Tests\\' => [__DIR__]
+        ]);
+
+        $this->expectOutputString('Success');
+        $this->router->dispatch($fakeNamespace, '/paramtest');
     }
 }
