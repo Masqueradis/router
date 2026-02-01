@@ -29,7 +29,7 @@ class Router
             return;
         }
 
-        $files = glob($dirPath . '/*.php');
+        $files = glob(($dirPath ?: '') . '/*.php') ?: [];
 
         foreach ($files as $file) {
             $className = basename($file, '.php');
