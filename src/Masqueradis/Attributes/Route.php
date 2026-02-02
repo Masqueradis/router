@@ -14,4 +14,3 @@ class Route
         public string $method = 'GET'
     ) {}
 }
-

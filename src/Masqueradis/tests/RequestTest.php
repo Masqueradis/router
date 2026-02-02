@@ -30,5 +30,4 @@ class RequestTest extends TestCase
         $result = $request->input('fakeKey', $defaultValue);
         $this->assertEquals($defaultValue, $result);
     }
-
 }
