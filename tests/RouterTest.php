@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Masqueradis\Tests;
 
 use Composer\Autoload\ClassLoader;
-use PHPUnit\Framework\TestCase;
 use Masqueradis\Routers\Router;
-use Masqueradis\Attributes\Route;
+use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase
 {
@@ -56,8 +55,8 @@ class RouterTest extends TestCase
             'Masqueradis\\Tests\\' => [__DIR__]
         ]);
 
-        $this->router->dispatch($fakeNamespace, '/fake/path');
         $this->expectOutputString('');
+        $this->router->dispatch($fakeNamespace, '/fake/path');
     }
 
     public function testResolveBuiltInParameters(): void

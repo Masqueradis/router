@@ -11,19 +11,19 @@
     </include>
     <exclude>
       <directory>vendor</directory>
-      <directory>src/Masqueradis/tests</directory>
+      <directory>tests</directory>
     </exclude>
   </source>
 
   <testsuites>
     <testsuite name="Unit">
-      <directory>src/Masqueradis/tests</directory>
+      <directory>./tests</directory>
     </testsuite>
   </testsuites>
 
   <coverage>
     <report>
-      <html outputDirectory="src/Masqueradis/tests/coverage" lowUpperBound="35" highLowerBound="70"/>
+      <html outputDirectory="tests/coverage" lowUpperBound="35" highLowerBound="70"/>
     </report>
   </coverage>
 

@@ -5,13 +5,13 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Masqueradis\\Routers\\": "src/Masqueradis/Routers/",
-            "Masqueradis\\Attributes\\": "src/Masqueradis/Attributes/"
+            "Masqueradis\\Routers\\": "src/Routers/",
+            "Masqueradis\\Attributes\\": "src/Attributes/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Masqueradis\\Tests\\": "src/Masqueradis/tests/"
+            "Masqueradis\\Tests\\": "tests/"
         }
     },
     "authors": [

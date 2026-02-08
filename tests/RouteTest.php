@@ -16,5 +16,4 @@ class RouteTest extends TestCase
         $this->assertEquals('/home', $router->path);
         $this->assertEquals('POST', $router->method);
     }
-
 }
