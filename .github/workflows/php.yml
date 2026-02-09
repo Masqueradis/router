@@ -43,7 +43,7 @@ jobs:
       run: vendor/bin/phpunit --coverage-clover clover.xml
 
     - name: Generate Coverage Badge
-      uses: timkuehlers/phpunit-coverage-badge@v1.1.0
+      uses: juliangut/phpunit-coverage-badge@v2
       with:
-        report: clover.xml
-        target: coverage.svg
+        clover_report: clover.xml
+        badge_path: coverage.svg
