@@ -47,3 +47,11 @@ jobs:
       with:
         clover_report: clover.xml
         badge_path: coverage.svg
+
+    - name: Commit and push badge
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add coverage.svg
+        git commit -m "chore: update coverage badge" || exit 0
+        git push
