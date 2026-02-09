@@ -42,16 +42,5 @@ jobs:
     - name: Run test suite
       run: vendor/bin/phpunit --coverage-clover clover.xml
 
-    - name: Generate Coverage Badge
-      uses: juliangut/phpunit-coverage-badge@v2
-      with:
-        clover_report: clover.xml
-        badge_path: coverage.svg
-
-    - name: Commit and push badge
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add coverage.svg
-        git commit -m "chore: update coverage badge" || exit 0
-        git push
+    - name: Checkout code
+      uses: actions/checkout@v2
