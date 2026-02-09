@@ -51,8 +51,8 @@ jobs:
     - name: Git push to image-data branch
       uses: peaceiris/actions-gh-pages@v3
       with:
-        publish_dir: ./output
-        publish_branch: image-data
+        publish_dir: ./coverage
+        publish_branch: tests-implementation
         github_token: ${{ secrets.GITHUB_TOKEN }}
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
