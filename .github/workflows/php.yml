@@ -41,3 +41,9 @@ jobs:
 
     - name: Run test suite
       run: vendor/bin/phpunit --coverage-clover clover.xml
+
+    - name: Generate Coverage Badge
+      uses: timkuehlers/phpunit-coverage-badge@v1.1.0
+      with:
+        report: clover.xml
+        target: coverage.svg
