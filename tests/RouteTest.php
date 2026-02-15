@@ -2,11 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Masqueradis\Tests;
+namespace Masqueradis\RouterTests;
 
+use Masqueradis\Router\Attributes\Route;
 use PHPUnit\Framework\TestCase;
-use Masqueradis\Attributes\Route;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class RouteTest extends TestCase
 {
     public function testAttributeStores(): void

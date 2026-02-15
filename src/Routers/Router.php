@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Masqueradis\Routers;
+namespace Masqueradis\Router\Routers;
 
 use Composer\Autoload\ClassLoader;
-use Masqueradis\Attributes\Route;
+use Masqueradis\Router\Attributes\Route;
 
 class Router
 {
     private ClassLoader $composerLoader;
-    public function __construct(ClassLoader $loader) {
+
+    public function __construct(ClassLoader $loader)
+    {
         $this->composerLoader = $loader;
     }
 
@@ -25,19 +27,20 @@ class Router
         $dirPath = $this->getDirFromNamespace($targetNamespace);
 
         if (!$dirPath || !is_dir($dirPath)) {
-            echo 'No directory for Controller: ' . $targetNamespace . PHP_EOL;
+            echo 'No directory for Controller: '.$targetNamespace.PHP_EOL;
+
             return;
         }
 
-        $files = glob($dirPath . '/*.php') ?: [];
+        $files = glob($dirPath.'/*.php') ?: [];
 
         foreach ($files as $file) {
             $className = basename($file, '.php');
 
-            $fullClassName = rtrim($targetNamespace, '\\') . '\\' . $className;
+            $fullClassName = rtrim($targetNamespace, '\\').'\\'.$className;
 
             if (class_exists($fullClassName)) {
-                if($this->scanClass($fullClassName, $uri)){
+                if ($this->scanClass($fullClassName, $uri)) {
                     return;
                 }
             }
@@ -52,16 +55,17 @@ class Router
         foreach ($prefixes as $prefix => $paths) {
             $prefixClean = trim($prefix, '\\');
 
-            if (strpos($namespace, $prefixClean) === 0) {
-               $basePathRaw = $paths[0];
-               $basePath = realpath($basePathRaw);
+            if (0 === strpos($namespace, $prefixClean)) {
+                $basePathRaw = $paths[0];
+                $basePath = realpath($basePathRaw);
 
-               $subPath = substr($namespace, strlen($prefixClean));
-               $subPath = trim($subPath, '\\');
+                $subPath = substr($namespace, strlen($prefixClean));
+                $subPath = trim($subPath, '\\');
 
-               return $basePath . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $subPath);
+                return $basePath.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $subPath);
             }
         }
+
         return null;
     }
 
@@ -71,29 +75,27 @@ class Router
         $prefix = '';
         $classAttributes = $reflection->getAttributes(Route::class);
 
-        if (!empty($classAttributes)) {
-            $prefix = $classAttributes[0]->newInstance()->path;
-        }
-
         foreach ($reflection->getMethods() as $method) {
             $attributes = $method->getAttributes(Route::class);
 
             foreach ($attributes as $attribute) {
                 $route = $attribute->newInstance();
 
-                $fullPath = rtrim($prefix, '/') . '/' . ltrim($route->path, '/');
-                if ($fullPath !== '/') {
-                    $fullPath = '/' . ltrim($fullPath, '/');
+                $fullPath = rtrim($prefix, '/').'/'.ltrim($route->path, '/');
+                if ('/' !== $fullPath) {
+                    $fullPath = '/'.ltrim($fullPath, '/');
                 }
 
                 if ($fullPath === $uri) {
                     $controller = new $className();
                     $args = $this->resolveParameters($method);
                     $method->invokeArgs($controller, $args);
+
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -105,18 +107,21 @@ class Router
         foreach ($method->getParameters() as $parameter) {
             $type = $parameter->getType();
 
-            if(!$type || $type->isBuiltin()) {
+            if (!$type || $type->isBuiltin()) { // @phpstan-ignore-line
                 $args[] = null;
+
                 continue;
             }
 
-            $typeName = $type->getName();
+            $typeName = $type->getName(); // @phpstan-ignore-line
 
-            if($typeName === Request::class) {
+            if (Request::class === $typeName) {
                 $args[] = $request;
+
                 continue;
             }
         }
+
         return $args;
     }
 }

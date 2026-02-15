@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Masqueradis\Tests\FakeControllers;
+namespace Masqueradis\RouterTests\Fake\Controllers;
 
-use Masqueradis\Attributes\Route;
-use Masqueradis\Routers\Request;
+use Masqueradis\Router\Attributes\Route;
 
 class FakeParamController
 {

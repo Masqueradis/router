@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Masqueradis\Attributes;
+namespace Masqueradis\Router\Attributes;
 
-use Attribute;
-
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class Route
 {
     public function __construct(

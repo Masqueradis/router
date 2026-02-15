@@ -2,19 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Masqueradis\Tests;
+namespace Masqueradis\RouterTests;
 
+use Masqueradis\Router\Routers\Request;
 use PHPUnit\Framework\TestCase;
-use Masqueradis\Routers\Request;
-use Masqueradis\Routers\Router;
-use Masqueradis\Attributes\Route;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class RequestTest extends TestCase
 {
-    public function  testInputReturnsFromBody(): void
+    public function testInputReturnsFromBody(): void
     {
         $fakeBody = [
-            'status' => 'active'
+            'status' => 'active',
         ];
 
         $request = new Request(body: $fakeBody);

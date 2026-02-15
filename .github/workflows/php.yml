@@ -40,19 +40,4 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Run test suite
-      run: vendor/bin/phpunit --coverage-clover clover.xml
-
-    - name: Make code coverage badge
-      uses: timkrase/phpunit-coverage-badge@v1.2.1
-      with:
-        coverage_badge_path: coverage/coverage.svg
-        push_badge: false
-
-    - name: Git push to image-data branch
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        publish_dir: ./coverage
-        publish_branch: tests-implementation-coverage
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        user_name: 'github-actions[bot]'
-        user_email: 'github-actions[bot]@users.noreply.github.com'
+      run: vendor/bin/phpunit --coverage-text

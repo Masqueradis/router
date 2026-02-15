@@ -1,6 +1,6 @@
 vendor
 .idea
-coverage
 phpunit.xml.dist.bak
-.phpunit.cache
-.phpunit.result.cache
+*.cache
+.php-cs-fixer.dist.php
+temp

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Masqueradis\Routers;
+namespace Masqueradis\Router\Routers;
 
 class Request
 {
@@ -32,11 +32,11 @@ class Request
 
     public function input(string $key, mixed $default = null): mixed
     {
-        if(isset($this->body[$key])) {
+        if (isset($this->body[$key])) {
             return $this->body[$key];
         }
 
-        if(isset($this->queryParams[$key])) {
+        if (isset($this->queryParams[$key])) {
             return $this->queryParams[$key];
         }
 

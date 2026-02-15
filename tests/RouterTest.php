@@ -2,12 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Masqueradis\Tests;
+namespace Masqueradis\RouterTests;
 
 use Composer\Autoload\ClassLoader;
-use Masqueradis\Routers\Router;
+use Masqueradis\Router\Routers\Router;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class RouterTest extends TestCase
 {
     private $loaderMuck;
@@ -17,7 +22,6 @@ class RouterTest extends TestCase
     {
         $this->loaderMuck = $this->createMock(ClassLoader::class);
         $this->router = new Router($this->loaderMuck);
-
     }
 
     public function testRouterPostMethod(): void
@@ -25,34 +29,34 @@ class RouterTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST = [
             'id' => 1,
-            'title' => 'title'
+            'title' => 'title',
         ];
 
-        $fakeNamespace = 'Masqueradis\\Tests\\FakeControllers\\';
+        $fakeNamespace = 'Masqueradis\RouterTests\Fake\Controllers\\';
 
         $this->loaderMuck->method('getPrefixesPsr4')->willReturn([
-            'Masqueradis\\Tests\\' => [__DIR__]
+            'Masqueradis\RouterTests\\' => [__DIR__],
         ]);
 
         $this->expectOutputString('Admin with id: 1 and title: title.');
-        $this->router->dispatch($fakeNamespace, '/admin/dashboard');
+        $this->router->dispatch($fakeNamespace, '/dashboard');
     }
 
     public function testRouterNoController(): void
     {
-        $fakeNamespace = 'Masqueradis\\Tests\\FakeControllers\\';
+        $fakeNamespace = 'Masqueradis\RouterTests\Fake\Controllers\\';
 
-        $this->expectOutputString('No directory for Controller: Masqueradis\\Tests\\FakeControllers\\' . PHP_EOL);
+        $this->expectOutputString('No directory for Controller: Masqueradis\RouterTests\Fake\Controllers\\'.PHP_EOL);
         $this->router->dispatch($fakeNamespace, '/admin');
     }
 
     public function testScanClassNegativeCase(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $fakeNamespace = 'Masqueradis\\Tests\\FakeControllers\\';
+        $fakeNamespace = 'Masqueradis\RouterTests\Fake\Controllers\\';
 
         $this->loaderMuck->method('getPrefixesPsr4')->willReturn([
-            'Masqueradis\\Tests\\' => [__DIR__]
+            'Masqueradis\RouterTests\Fake\Controllers\\' => [__DIR__],
         ]);
 
         $this->expectOutputString('');
@@ -62,10 +66,10 @@ class RouterTest extends TestCase
     public function testResolveBuiltInParameters(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $fakeNamespace = 'Masqueradis\\Tests\\FakeControllers\\';
+        $fakeNamespace = 'Masqueradis\RouterTests\Fake\Controllers\\';
 
         $this->loaderMuck->method('getPrefixesPsr4')->willReturn([
-            'Masqueradis\\Tests\\' => [__DIR__]
+            'Masqueradis\RouterTests\\' => [__DIR__],
         ]);
 
         $this->expectOutputString('Success');
