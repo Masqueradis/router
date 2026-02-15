@@ -4,3 +4,4 @@ phpunit.xml.dist.bak
 *.cache
 .php-cs-fixer.dist.php
 temp
+clover.xml
